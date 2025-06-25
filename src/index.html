@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla App Template</title>
-    <link rel="stylesheet" href="./css/styles.css" />
-  </head>
-  <body class="theme-dark">
-    <load src="./partials/header.html" />
 
-    <main>
-      <!-- Loads the specified .html file -->
-      <load src="./partials/tasks-list.html" />
-    </main>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vanilla App Template</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
 
-    <script type="module" src="./main.js"></script>
-  </body>
+<body class="theme-dark">
+  <load src="./partials/header.html" />
+
+  <main>
+    <!-- Loads the specified .html file -->
+    <load src="./partials/tasks-list.html" />
+  </main>
+
+
+
+
+  <script type="module" src="./js/refs.js"></script>
+  <script type="module" src="./js/local-storage-api.js"></script>
+  <script type="module" src="./js/tasks.js"></script>
+  <script type="module" src="./js/render-tasks.js"></script>
+  <script type="module" src="./main.js"></script>
+
+</body>
+
 </html>
