@@ -25,7 +25,9 @@ const inputName = document.querySelector('input[name="taskName"]');
 const taskList = document.querySelector("#task-list");
 const inputDesc = document.querySelector('input[name="taskDescription"]');
 const changeTheme = document.querySelector("#themeToggle");
-const body=document.body;
+const body = document.body;
+
+// Завантаження задач
 
 function loadTasks() {
   try {
@@ -37,27 +39,32 @@ function loadTasks() {
 }
 
 
-
-
+// Збереження задач
+function saveTasks(tasks) {
+  localStorage.setItem(STORAGE_KEY_TASKS,JSON.stringify(tasks) )
+}
 
 // form.addEventListener("input", handleInput);
 
-const newName = refs.inputName.value.trim();
-const newTask = refs.inputDesc.value.trim();
+const newName = inputName.value.trim();
+const newTask = inputDesc.value.trim();
 
 
 form.addEventListener("submit", handleSubmit)
 
 function handleSubmit(e) {
     e.preventDefault();
-    refs.form.reset()
+    form.reset()
 }
 
-const getEl =  `<li class="task-list-item">
+function createTaskMarkup({id, title, text }) {
+  return 
+  `<li class="task-list-item" data-id="${id}">
       <button class="task-list-item-btn">Delete</button>
-      <h3>${newName}</h3>
-      <p>${newTask}</p>
-  </li>`
+      <h3>${title}</h3>
+      <p>${text}</p>
+    </li>`;
+}
 
 
 changeTheme.addEventListener("click", handleClick);
