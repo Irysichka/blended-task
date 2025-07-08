@@ -27,8 +27,17 @@ const inputDesc = document.querySelector('input[name="taskDescription"]');
 const changeTheme = document.querySelector("#themeToggle");
 const body = document.body;
 
-// Завантаження задач
+let tasks = loadTasks();
+applySavedTheme();
+renderTasks();
 
+// Завантаження задач
+function renderTasks() {
+  taskList.innerHTML = "";
+  tasks.forEach(task => {
+    taskList.insertAdjacentHTML("beforeend", createTaskMarkup(task))
+  });
+}
 function loadTasks() {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY_TASKS)) || []
@@ -44,22 +53,36 @@ function saveTasks(tasks) {
   localStorage.setItem(STORAGE_KEY_TASKS,JSON.stringify(tasks) )
 }
 
-// form.addEventListener("input", handleInput);
 
-const newName = inputName.value.trim();
-const newTask = inputDesc.value.trim();
 
 
 form.addEventListener("submit", handleSubmit)
 
 function handleSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
+ const title = inputName.value.trim();
+const text = inputDesc.value.trim();
+
+  if (!title || !text) {
+    return;
+  }
+
+  const newTask = {
+    id: Date.now().toString(),
+    title,
+    text
+  };
+
+  tasks.push(newTask);
+  saveTasks(tasks);
+
+
+taskList.insertAdjacentHTML("beforeend", createTaskMarkup(newTask))
     form.reset()
 }
 
 function createTaskMarkup({id, title, text }) {
-  return 
-  `<li class="task-list-item" data-id="${id}">
+  return `<li class="task-list-item" data-id="${id}">
       <button class="task-list-item-btn">Delete</button>
       <h3>${title}</h3>
       <p>${text}</p>
@@ -67,19 +90,41 @@ function createTaskMarkup({id, title, text }) {
 }
 
 
+taskList.addEventListener("click", handleDelete);
+
+
+function handleDelete(e) {
+  if (!e.target.classList.contains("task-list-item-btn")) return;
+  const taskItem = e.target.closest(".task-list-item")
+  const taskId = taskItem.dataset.id;
+
+  tasks = tasks.filter(task => task.id !== taskId);
+  saveTasks(tasks);
+  taskItem.remove();
+}
+
 changeTheme.addEventListener("click", handleClick);
 
 function handleClick() {
     if (body.classList.contains("theme-dark")) { 
         body.classList.remove("theme-dark");
         body.classList.add("theme-light");
-        localStorage.setItem("theme", "theme-light");
+        localStorage.setItem(STORAGE_KEY_THEME, "theme-light");
     } else {
         body.classList.remove("theme-light");
         body.classList.add("theme-dark");
-        localStorage.setItem("theme", "theme-dark");
+        localStorage.setItem(STORAGE_KEY_THEME, "theme-dark");
     }
    
+}
+
+function applySavedTheme() {
+  const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+  if (savedTheme) {
+    body.classList.add(savedTheme);
+  } else {
+    body.classList.add("theme-light")
+  }
 }
 
 
